@@ -1,16 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
+import { tankAndFish as TankAndFish } from "./tankAndFish";
 
 function App() {
   return (
-    <Canvas>
+    <Canvas camera={{ position: [0, 0, 10] }}>
       {/* Your 3D objects and components will go here */}
-      <ambientLight />
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[10, 10, 5]} intensity={1.5} castShadow />
       <OrbitControls />
-      <mesh>
-        <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color="hotpink" />
-      </mesh>
+      <TankAndFish position={[0, 0, 0]} />
     </Canvas>
   );
 }
