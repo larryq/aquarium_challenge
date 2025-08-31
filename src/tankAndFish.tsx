@@ -56,16 +56,19 @@ export function tankAndFish(
   // Render the loaded scene.
   // The "scene" object contains all meshes, materials, and animations.
   useEffect(() => {
+    console.log("hello");
     if (modelRef.current) {
       // Traverse all meshes in the scene and enable shadows
+      console.log("hellooooo");
       modelRef.current.traverse((node) => {
-        if (node instanceof THREE.Mesh) {
+        console.log("Mesh:", node.name);
+        if (node instanceof THREE.Mesh && !node.name.startsWith("pebbles")) {
           node.castShadow = true;
           node.receiveShadow = true;
         }
       });
     }
-  }, []);
+  }, [modelRef]);
 
   return <primitive object={scene} {...props} />;
 }
