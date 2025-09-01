@@ -13,22 +13,14 @@ interface LightWithHelperProps {
 export function LightWithHelper({ target }: LightWithHelperProps) {
   const spotLightRef = useRef<SpotLight | null>(null);
 
-  useHelper(spotLightRef as any, SpotLightHelper, "hotpink");
-
   return (
     <spotLight
       ref={spotLightRef}
       position={[0, 50, 0]}
-      angle={0.5}
+      angle={0.8}
       penumbra={1}
-      intensity={22}
-      castShadow
+      intensity={2}
       target={target}
-      shadow-mapSize-width={1024}
-      shadow-mapSize-height={1024}
-      shadow-camera-near={0.5}
-      shadow-camera-far={200} // <--- Increase this value
-      // shadow-camera-fov={30}
     />
   );
 }
