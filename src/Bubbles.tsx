@@ -22,26 +22,30 @@ export function Bubbles({
   topBoundary,
 }: BubblesProps) {
   const pointsRef = useRef<PointsRef>(null);
-  const count = 500;
+  const count = 600;
   //const positions = new Float32Array(count * 3);
   const bubbleSpread = 20;
-  const bubbleSpeed = 0.06;
+  const bubbleSpeed = 0.09;
   const bubbleSize = 0.2;
   const bubbleHeight = 10;
-  const bubbleDrift = 0.1;
+  const bubbleDrift = 0.15;
   const xAxisSpread = 3;
   const zAxisSpread = 3;
+  const yAxisSpread = 20;
 
   // Use useMemo to prevent re-creating positions and vanishHeights on every render
   const { positions, vanishHeights } = useMemo(() => {
     const positions = new Float32Array(count * 3);
     const vanishHeights = new Float32Array(count); // An array to store unique vanish heights
+    const yHeight = 15; // Total height of the bubble column
+    const yStart = 1; // Starting Y-position
     const vanishingRange = 2; // Range above the topBoundary where bubbles will vanish
     for (let i = 0; i < count; i++) {
       // Set initial positions
       positions[i * 3 + 0] =
         (Math.random() - 0.5) * xAxisSpread + initialPosition[0]; // X-axis spread
-      positions[i * 3 + 1] = Math.random() * 10 - 5 + initialPosition[1];
+      positions[i * 3 + 1] =
+        Math.random() * yHeight + yStart + initialPosition[1];
       positions[i * 3 + 2] =
         (Math.random() - 0.5) * zAxisSpread + initialPosition[2]; // Z-axis spread
 
@@ -79,10 +83,10 @@ export function Bubbles({
 
         // Loop the bubbles back down when they go too high
         if (newPositions[i + 1] > vanishHeights[bubbleIndex]) {
-          newPositions[i + 1] = -5 + positions[i + 1] + initialPosition[1];
+          newPositions[i + 1] = -5 + initialPosition[1];
           // Reset X and Z to the initial position to start a new column
-          const initialX = positions[i + 0] + initialPosition[0];
-          const initialZ = positions[i + 2] + initialPosition[2];
+          const initialX = positions[i + 0]; // + initialPosition[0];
+          const initialZ = positions[i + 2]; // + initialPosition[2];
           newPositions[i + 0] = initialX;
           newPositions[i + 2] = initialZ;
         }

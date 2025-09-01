@@ -6,9 +6,15 @@ import {
   type MathProps,
   type ReactProps,
 } from "@react-three/fiber";
-import { Environment, OrbitControls, useVideoTexture } from "@react-three/drei";
+import {
+  Environment,
+  Html,
+  Loader,
+  OrbitControls,
+  useVideoTexture,
+} from "@react-three/drei";
 import { tankAndFish as TankAndFish } from "./tankAndFish";
-import { useRef } from "react";
+import { Suspense, useRef } from "react";
 import { LightWithHelper } from "./LightWithHelper";
 import { Object3D, SpotLight } from "three";
 import type {
@@ -16,13 +22,9 @@ import type {
   Overwrite,
 } from "@react-three/fiber/dist/declarations/src/core/utils";
 import type { JSX } from "react/jsx-runtime";
-import {
-  EffectComposer,
-  Bloom,
-  ToneMapping,
-  WaterEffect,
-} from "@react-three/postprocessing";
 import { Bubbles } from "./Bubbles";
+import SceneLoader from "./SceneLoader";
+//import Spinner from "./Spinner";
 // Import other postprocessing effects from "@react-three/postprocessing" as needed
 function App() {
   const modelRef = useRef(null);
@@ -61,33 +63,33 @@ function App() {
     );
   }
 
-  // Example Postpro function using @react-three/postprocessing components
-
-  function Postpro() {
-    return (
-      <EffectComposer>
-        {/* Add postprocessing effects here, e.g.: */}
-        {/* <HueSaturation saturation={-1} /> */}
-        {/* <BrightnessContrast brightness={0} contrast={0.25} /> */}
-        <WaterEffect factor={0.75} />
-        {/* <TiltShift2 samples={6} blur={0.5} /> */}
-        <Bloom mipmapBlur luminanceThreshold={0} intensity={3} />
-        <ToneMapping />
-      </EffectComposer>
-    );
-  }
-
   return (
     <Canvas
       camera={{ position: [35, 30, 0] }}
       style={{ background: "#000" }} // A solid black background>
       shadows={true}
     >
-      <Environment preset="night" />
-      {/* Your 3D objects and components will go here */}
-      {/* Ambient Light for overall scene brightness */}
+      <SceneLoader />
+      {/* <Suspense
+        fallback={
+          // Use a simple HTML div as the fallback
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              color: "red",
+              fontSize: "2rem",
+              textAlign: "center",
+            }}
+          >
+            Loading....
+          </div>
+        }
+      > */}
+      <Environment preset="night" background blur={10} />
       <ambientLight intensity={0.5} />
-
       <Caustics
         distance={100}
         intensity={13}
@@ -126,9 +128,10 @@ function App() {
         rotation={[-Math.PI / 2, 0, 0]}
       >
         <planeGeometry args={[200, 200]} />
-        <meshStandardMaterial color="pink" />
+        <meshStandardMaterial color="light grey" />
       </mesh>
-      <Bubbles position={[5, -1, 5]} topBoundary={8} />
+      <Bubbles position={[5, -1, 5]} topBoundary={18} />
+      <Bubbles position={[-5, -1, -15]} topBoundary={23} />
       <OrbitControls
         autoRotate
         autoRotateSpeed={1.7}
@@ -136,6 +139,7 @@ function App() {
         minPolarAngle={0}
         maxPolarAngle={Math.PI / 2.5}
       />
+      {/* </Suspense> */}
     </Canvas>
   );
 }
