@@ -20,7 +20,7 @@ export default function SceneLoader() {
           fontFamily: "Arial, sans-serif",
         }}
       >
-        <p>Loading {item}...</p>
+        <p>Loading scene, please wait!...</p>
         <div
           style={{
             width: "200px",
