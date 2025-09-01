@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Points, PointMaterial } from "@react-three/drei";
@@ -16,7 +17,10 @@ type PointsRef = THREE.Points & {
   };
 };
 
-export function Bubbles({ position, topBoundary }: BubblesProps) {
+export function Bubbles({
+  position: initialPosition,
+  topBoundary,
+}: BubblesProps) {
   const pointsRef = useRef<PointsRef>(null);
   const count = 500;
   //const positions = new Float32Array(count * 3);
@@ -35,15 +39,17 @@ export function Bubbles({ position, topBoundary }: BubblesProps) {
     const vanishingRange = 2; // Range above the topBoundary where bubbles will vanish
     for (let i = 0; i < count; i++) {
       // Set initial positions
-      positions[i * 3 + 0] = (Math.random() - 0.5) * xAxisSpread + position[0]; // X-axis spread
-      positions[i * 3 + 1] = Math.random() * 10 - 5 + position[1];
-      positions[i * 3 + 2] = (Math.random() - 0.5) * zAxisSpread + position[2]; // Z-axis spread
+      positions[i * 3 + 0] =
+        (Math.random() - 0.5) * xAxisSpread + initialPosition[0]; // X-axis spread
+      positions[i * 3 + 1] = Math.random() * 10 - 5 + initialPosition[1];
+      positions[i * 3 + 2] =
+        (Math.random() - 0.5) * zAxisSpread + initialPosition[2]; // Z-axis spread
 
       // Assign a unique vanish height to each bubble
       vanishHeights[i] = topBoundary + (Math.random() - 0.5) * vanishingRange; // +/- vanishingRange unit /2 from topBoundary
     }
     return { positions, vanishHeights };
-  }, [position, topBoundary]);
+  }, [initialPosition, topBoundary]);
 
   // Set initial random positions for the bubbles
   //   for (let i = 0; i < count; i++) {
@@ -73,10 +79,10 @@ export function Bubbles({ position, topBoundary }: BubblesProps) {
 
         // Loop the bubbles back down when they go too high
         if (newPositions[i + 1] > vanishHeights[bubbleIndex]) {
-          newPositions[i + 1] = -5 + position[1];
+          newPositions[i + 1] = -5 + positions[i + 1] + initialPosition[1];
           // Reset X and Z to the initial position to start a new column
-          const initialX = positions[i + 0] + position[0];
-          const initialZ = positions[i + 2] + position[2];
+          const initialX = positions[i + 0] + initialPosition[0];
+          const initialZ = positions[i + 2] + initialPosition[2];
           newPositions[i + 0] = initialX;
           newPositions[i + 2] = initialZ;
         }

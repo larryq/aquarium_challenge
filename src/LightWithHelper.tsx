@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // src/LightWithHelper.tsx
 import { useRef } from "react";
 import { useHelper } from "@react-three/drei";
